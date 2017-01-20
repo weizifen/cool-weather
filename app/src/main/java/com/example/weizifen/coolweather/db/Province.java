@@ -1,10 +1,12 @@
 package com.example.weizifen.coolweather.db;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by weizifen on 17/1/20.
  */
 
-public class Province {
+public class Province extends DataSupport {
     private int id;
     private String provinceName;
     private int provinceCode;
