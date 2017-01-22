@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -62,17 +61,20 @@ public class WeatherActivity extends AppCompatActivity {
     ScrollView weatherLayout;
     @BindView(R.id.bing_pic_img)
     ImageView bingPicImg;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.forecast_layout)
+    LinearLayout forecastLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /*去除状态栏方法*/
-        if (Build.VERSION.SDK_INT>=21)
-        {
-            View decorView=getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_FULLSCREEN|View.TEXT_ALIGNMENT_VIEW_START
+                    View.SYSTEM_UI_FLAG_FULLSCREEN | View.TEXT_ALIGNMENT_VIEW_START
             );
             getWindow().setStatusBarColor(Color.TRANSPARENT);
 
@@ -80,6 +82,9 @@ public class WeatherActivity extends AppCompatActivity {
         /*在加载布局前设置*/
         setContentView(R.layout.activity_weather);
         ButterKnife.bind(this);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+
+
 
 
         /*-------------------------------------------------------------------------*/
@@ -99,13 +104,20 @@ public class WeatherActivity extends AppCompatActivity {
 //        }
 
         /*-------------------------------------------------------------------------*/
-        String weatherCity = getIntent().getStringExtra("weather_city");
+        final String weatherCity = getIntent().getStringExtra("weather_city");
         Log.d(TAG, weatherCity);
         rxjavaAndRetrofit(weatherCity);
         loadingBackgroundImage();
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                rxjavaAndRetrofit(weatherCity);
+            }
+        });
 
 
     }
+
 
     /*=============================================================================*/
     /*--------------------------rxjava与rxandroid获取网络请求----------------------*/
@@ -148,6 +160,7 @@ public class WeatherActivity extends AppCompatActivity {
                         editor.apply();
                         showWeatherInfo(weather);
                         forcastInfo(weather);
+                        swipeRefresh.setRefreshing(false);
                     }
                 });
     }
@@ -223,10 +236,12 @@ public class WeatherActivity extends AppCompatActivity {
     /*--------------------------未来天气-------------------------*/
     private void forcastInfo(Weather weather) {
 
+
         for (Weather.HeWeather5Bean heWeather5Bean : weather.getHeWeather5()) {
+            forecastLayout.removeAllViews();
             for (Weather.HeWeather5Bean.DailyForecastBean dailyForecastBean : heWeather5Bean.getDaily_forecast()) {
                 {
-                    LinearLayout forecastLayout = (LinearLayout) findViewById(R.id.forecast_layout);
+
                     Toast.makeText(WeatherActivity.this, dailyForecastBean.getDate(), Toast.LENGTH_SHORT).show();
                     View view = LayoutInflater.from(WeatherActivity.this).inflate(R.layout.forecast_item, forecastLayout, false);
                     TextView dateText = (TextView) view.findViewById(R.id.date_text);
@@ -252,7 +267,7 @@ public class WeatherActivity extends AppCompatActivity {
     /*============================================================*/
 
 
-     /*============================================================*/
+    /*============================================================*/
      /*--------------------------背景图片-------------------------*/
     private void loadingBackgroundImage() {
 
@@ -263,7 +278,6 @@ public class WeatherActivity extends AppCompatActivity {
                 Glide.with(WeatherActivity.this).load("http://cn.bing.com/az/hprichbg/rb/PfeifferBeach_ZH-CN13868196659_1920x1080.jpg").into(bingPicImg);
             }
         });
-
 
 
     }

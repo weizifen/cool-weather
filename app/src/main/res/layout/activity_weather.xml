@@ -9,6 +9,10 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:id="@+id/bing_pic_img"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh">
     <ScrollView
         android:id="@+id/weather_layout"
         android:layout_width="match_parent"
@@ -29,6 +33,7 @@
                 />
         </LinearLayout>
     </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </FrameLayout>
