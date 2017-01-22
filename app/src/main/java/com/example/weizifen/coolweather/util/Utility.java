@@ -1,14 +1,19 @@
 package com.example.weizifen.coolweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.weizifen.coolweather.db.City;
 import com.example.weizifen.coolweather.db.County;
 import com.example.weizifen.coolweather.db.Province;
+import com.example.weizifen.coolweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 /**
  * Created by weizifen on 17/1/20.
@@ -81,4 +86,25 @@ public class Utility {
         }
         return false;
     }
+
+    private static final String TAG = "Utility";
+
+    /*不用RXJAVA和RETROFIT采用的方法*/
+    public static Weather handleWeatherResponse(String response)
+    {
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather5");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            Log.d(TAG,weatherContent);
+            return new Gson().fromJson(weatherContent,Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+
+    }
+    /*--------------------------------------------------------*/
+
 }

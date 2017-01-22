@@ -2,6 +2,7 @@ package com.example.weizifen.coolweather;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -113,6 +114,13 @@ public class ChooseAreaFragment extends Fragment {
                 {
                    selectedCity=cityList.get(i);
                     queryCounties();
+                }else if (currentLevel==LEVEL_COUNTY)
+                {
+                    String weatherCity=countyList.get(i).getCountyName();
+                    Intent intent=new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weather_city",weatherCity);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
 
             }
