@@ -5,11 +5,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -65,6 +68,10 @@ public class WeatherActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.forecast_layout)
     LinearLayout forecastLayout;
+    @BindView(R.id.nav_button)
+    Button navButton;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
 
     @Override
@@ -108,10 +115,19 @@ public class WeatherActivity extends AppCompatActivity {
         Log.d(TAG, weatherCity);
         rxjavaAndRetrofit(weatherCity);
         loadingBackgroundImage();
+        /*下拉刷新*/
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 rxjavaAndRetrofit(weatherCity);
+            }
+        });
+
+        /*点击左上方HOME*/
+        navButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
@@ -121,7 +137,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     /*=============================================================================*/
     /*--------------------------rxjava与rxandroid获取网络请求----------------------*/
-    private void rxjavaAndRetrofit(final String weatherCity) {
+    public void rxjavaAndRetrofit(final String weatherCity) {
         String responseText;
         String weatherUrl = "https://api.heweather.com/v5/";
         Retrofit retrofit = new Retrofit.Builder()
