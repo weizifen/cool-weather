@@ -6,7 +6,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.weizifen.coolweather.ui.CheckPermissionsActivity;
+
+public class MainActivity extends CheckPermissionsActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,4 +22,7 @@ public class MainActivity extends AppCompatActivity {
 //            finish();
 //        }
     }
+
+
+
 }

@@ -9,7 +9,14 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:background="@drawable/ic_home"/>
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/title_city"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:textColor="#fff"-->
+        <!--android:textSize="20sp"/>-->
+    <com.example.weizifen.coolweather.ui.titleView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title_city"
