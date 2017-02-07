@@ -217,8 +217,11 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
-        mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
+     if (mLocationClient!=null)
+     {
+         mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
+         mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
+     }
     }
 
     /*
