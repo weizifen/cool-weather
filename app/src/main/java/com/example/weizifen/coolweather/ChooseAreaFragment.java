@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,9 +133,6 @@ public class ChooseAreaFragment extends Fragment {
         }
     };
 
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,6 +143,7 @@ public class ChooseAreaFragment extends Fragment {
         locationBtn=(Button)view.findViewById(R.id.location);
         adapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
+
 
 
 
@@ -168,7 +168,7 @@ public class ChooseAreaFragment extends Fragment {
                 //初始化定位参数
                 mLocationOption = new AMapLocationClientOption();
                 //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
-                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+                mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
                 //设置是否返回地址信息（默认返回地址信息）
                 mLocationOption.setNeedAddress(true);
                 //设置是否只定位一次,默认为false
